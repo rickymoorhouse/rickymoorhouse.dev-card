@@ -1,30 +1,18 @@
-```ascii
- █████╗ ███████╗██╗  ██╗██╗     ███████╗██╗   ██╗
-██╔══██╗██╔════╝██║  ██║██║     ██╔════╝╚██╗ ██╔╝
-███████║███████╗███████║██║     █████╗   ╚████╔╝ 
-██╔══██║╚════██║██╔══██║██║     ██╔══╝    ╚██╔╝  
-██║  ██║███████║██║  ██║███████╗███████╗   ██║   
-╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   
-```                                                  
-
-> 💻 Ashley Willis' terminal business card 🖥️
+# Terminal business card
 
 ## 🚀 Usage
 
-Fire up your favorite terminal and run:
-
 ```bash
-$ npx ashleywillis
-# Watch the magic happen! (⌐■_■)
+$ npx dalelane
 ```
 
 ## 🧪 Tech Specs
 
 Built with `Node.js` ✨
 
-## 🔌 Credits 
+## 🔌 Credits
 
-Inspired by [Tierney Cyren's bitandbang](https://github.com/bnb/bitandbang) <(￣︶￣)>
+Inspired by [Ashley Willis](https://ashley.dev/posts/turning-feedback-into-features/) and [Tierney Cyren's bitandbang](https://github.com/bnb/bitandbang) <(￣︶￣)>
 
 ## 📄 License
 

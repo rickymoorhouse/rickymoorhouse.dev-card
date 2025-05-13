@@ -1,10 +1,10 @@
 {
-  "name": "ashleywillis",
-  "version": "1.2.0",
-  "description": "Ashley Willis' terminal business card",
+  "name": "dalelane",
+  "version": "0.0.2",
+  "description": "Dale Lane's terminal business card",
   "main": "bin.js",
   "bin": {
-    "ashleywillis": "./bin.js"
+    "dalelane": "./bin.js"
   },
   "scripts": {
     "start": "node bin.js"
@@ -14,7 +14,7 @@
     "business-card",
     "npx"
   ],
-  "author": "Ashley Willis <hello@ashley.dev> (https://ashley.dev)",
+  "author": "Dale Lane <email@dalelane.co.uk> (https://dalelane.co.uk)",
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2"
