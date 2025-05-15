@@ -31,26 +31,9 @@ function decodeHtmlEntities(str) {
 }
 
 
-function getRecentlyPlayedGameName() {
-    const FALLBACK_RESPONSE = 'Video games!';
-    return urlGet('https://backloggd-api.vercel.app/user/dalelane')
-        .then((data) => {
-            try {
-                return JSON.parse(data).content.recentlyPlayed[0].name;
-            }
-            catch {
-                return FALLBACK_RESPONSE;
-            }
-        })
-        .catch(() => {
-            return FALLBACK_RESPONSE;
-        });
-}
-
-
 function getRecentlyReadBookName() {
     const FALLBACK_RESPONSE = 'Books!';
-    return urlGet('https://www.goodreads.com/user/show/1370155-dale-lane')
+    return urlGet('https://www.goodreads.com/user/show/3449499-ricky')
         .then((data) => {
             try {
                 const metaTagRegex = /<meta\s+name=["']description["']\s+content=["'](.*?)["']\s*\/?>/i;
@@ -78,7 +61,7 @@ function getRecentlyReadBookName() {
 
 function getRecentlyListenedSongName() {
     const FALLBACK_RESPONSE = 'Music!';
-    return urlGet('https://badges.lastfm.workers.dev/last-played?user=dalelane')
+    return urlGet('https://badges.lastfm.workers.dev/last-played?user=rickymoorhouse')
         .then((data) => {
             try {
                 const tagRegex = /<title>(.*?)<\/title>/;
@@ -106,18 +89,19 @@ function getRecentlyListenedSongName() {
 
 function getRecentBlueskyPost() {
     const FALLBACK_RESPONSE = 'Something interesting';
-    return urlGet('https://bsky.app/profile/did:plc:mecl54mdisxz3xv5da7yxr53/rss')
+    return urlGet('https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=rickymoorhouse.uk')
         .then((data) => {
             try {
-                const itemMatch = data.match(/<item>[\s\S]*?<\/item>/);
-                if (!itemMatch) {
-                    return FALLBACK_RESPONSE;
-                }
-                const descriptionMatch = itemMatch[0].match(/<description>([\s\S]*?)<\/description>/);
-                if (!descriptionMatch) {
-                    return FALLBACK_RESPONSE;
-                }
-                return decodeHtmlEntities(descriptionMatch[1]);
+                var feed = JSON.parse(data);
+                var text = "";
+                feed.feed.forEach(function(item) {
+                    if (text == "" && item.post.record.text != "") {
+                        text = item.post.record.text;
+                    }
+                });
+                console.log(text)
+                return text;
+                
                 }
             catch {
                 return FALLBACK_RESPONSE;
@@ -129,8 +113,26 @@ function getRecentBlueskyPost() {
 }
 
 
+function getRecentBlogPost() {
+    const FALLBACK_RESPONSE = 'Something interesting';
+    return urlGet('https://rickymoorhouse.uk/jsonfeed/index.json')
+        .then((data) => {
+            try {
+                var feed = JSON.parse(data);
+                return feed.items[0].title + " : " + feed.items[0].url;
+                
+                }
+            catch {
+                return FALLBACK_RESPONSE;
+            }
+        })
+        .catch(() => {
+            return FALLBACK_RESPONSE;
+        });
+}
+
 // Card dimensions - fixed width for better alignment
-const WIDTH = 72;
+const WIDTH = 80;
 const PADDING = 5;
 const LINELENGTH = WIDTH - PADDING;
 
@@ -169,10 +171,10 @@ function wrap(str) {
 
 
 // Define colors and styles
-const primary = chalk.hex('#654FF0');
-const secondary = chalk.hex('#4FF0B5');
+const primary = chalk.hex('#009988');
+const secondary = chalk.hex('#447777');
 const subtle = chalk.hex('#AFB7C0');
-const headings = chalk.hex('#F04F89');
+const headings = chalk.hex('#009988');
 const highlight = primary.bold;
 
 // Create borders with exact width
@@ -195,34 +197,31 @@ const thindivider = createLine(' ' + subtle('-'.repeat(WIDTH - 2)) + ' ');
 
 Promise.all([
     getRecentlyReadBookName(),
-    getRecentlyPlayedGameName(),
-    getRecentlyListenedSongName(),
+    getRecentBlogPost(),
     getRecentBlueskyPost()
 ])
-.then(([ recentlyRead, recentlyPlayed, recentlyListened, recentlySaid ]) => {
+.then(([ recentlyRead, recentlyWrote, recentlySaid ]) => {
     const card = [
         '',
         topBorder,
         emptyLine,
-        createLine(' ' + highlight('dale lane')),
+        createLine(' ' + highlight('Ricky Moorhouse')),
         divider,
         emptyLine,
-        createLine(' ' + '🏢' + '  ' + headings('Work') + '    :: ' + chalk.white('Chief Architect @ IBM')),
-        createLine(' ' + '🦋' + '  ' + headings('Bluesky') + ' :: ' + chalk.white('@dalelane.co.uk')),
-        createLine(' ' + '📬' + '  ' + headings('Email') + '   :: ' + chalk.greenBright.underline('email@dalelane.co.uk')),
-        createLine(' ' + '🌐' + '  ' + headings('Web') + '     :: ' + chalk.greenBright.underline('https://dalelane.co.uk')),
+        createLine(' ' + '🏢' + '  ' + headings('Work') + '    :: ' + chalk.white('Cloud Architect @ IBM')),
+        createLine(' ' + '🦋' + '  ' + headings('Bluesky') + ' :: ' + chalk.white('@rickymoorhouse.uk')),
+        createLine(' ' + '📬' + '  ' + headings('Email') + '   :: ' + chalk.greenBright.underline('hi@rickymoorhouse.uk')),
+        createLine(' ' + '🌐' + '  ' + headings('Web') + '     :: ' + chalk.greenBright.underline('https://rickymoorhouse.uk')),
         emptyLine,
         thindivider,
         createLine(' ' + '📖' + ' ' + headings('Reading')),
         createLine(' ' + '  ' + truncate(recentlyRead)),
-        createLine(' ' + '🎮' + ' ' + headings('Playing')),
-        createLine(' ' + '  ' + truncate(recentlyPlayed)),
-        createLine(' ' + '🎹' + ' ' + headings('Listening')),
-        createLine(' ' + '  ' + truncate(recentlyListened)),
+        createLine(' ' + '🎹' + ' ' + headings('Writing')),
+        createLine(' ' + '  ' + truncate(recentlyWrote)),
         createLine(' ' + '🤐' + ' ' + headings('Saying')),
         wrap(recentlySaid).map(l => createLine('   ' + l)).join('\n'),
         divider,
-        createLine(' ' + subtle('>') + ' ' + subtle('Run') + ' ' + secondary('npx dalelane') + ' ' + subtle('anytime to see this card')),
+        createLine(' ' + subtle('>') + ' ' + subtle('Run') + ' ' + secondary('npx rickymoorhouse') + ' ' + subtle('anytime to see this card')),
         bottomBorder,
         ''
     ].join('\n');

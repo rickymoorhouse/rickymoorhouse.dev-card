@@ -1,10 +1,10 @@
 {
-  "name": "dalelane",
-  "version": "0.0.2",
-  "description": "Dale Lane's terminal business card",
+  "name": "rickymoorhouse",
+  "version": "0.0.1",
+  "description": "Ricky Moorhouse's terminal business card",
   "main": "bin.js",
   "bin": {
-    "dalelane": "./bin.js"
+    "rickymoorhouse": "./bin.js"
   },
   "scripts": {
     "start": "node bin.js"
@@ -14,7 +14,7 @@
     "business-card",
     "npx"
   ],
-  "author": "Dale Lane <email@dalelane.co.uk> (https://dalelane.co.uk)",
+  "author": "Ricky Moorhouse <hi@rickymoorhouse.uk> (https://rickymooorhouse.uk)",
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2"
