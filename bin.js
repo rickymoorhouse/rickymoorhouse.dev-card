@@ -99,7 +99,6 @@ function getRecentBlueskyPost() {
                         text = item.post.record.text;
                     }
                 });
-                console.log(text)
                 return text;
                 
                 }
